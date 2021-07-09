@@ -1,5 +1,5 @@
 FROM alpine
 WORKDIR /app
-COPY check-certs .
 ENV FLAG ""
+COPY check-certs .
 ENTRYPOINT /app/check-certs ${FLAG}
