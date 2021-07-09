@@ -1,0 +1,40 @@
+env:
+  - GO111MODULE=on
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: cmd/main.go
+    env:
+      - CGO_ENABLED=0
+    binary: check-certs
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+dockers:
+  - goos: linux
+    goarch: amd64
+    goarm: ''
+    ids:
+      - check-certs
+    image_templates:
+      - "hb0730/check-certs:latest"
+      - "hb0730/check-certs:{{.Tag}}"
+    skip_push: false
+    dockerfile: Dockerfile
+    use_buildx: true
+
+archives:
+  - id: tar
+    format: tar.gz
+    replacements:
+      darwin: macOS
+    format_overrides:
+      - goos: windows
+        format: zip
